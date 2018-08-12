@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xsi:noNamespaceSchemaLocation="GeneratorConfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact="test-genera" project-name="testProject" group="testGroup" version="0.01" self-contained="true" description="description1">
+	<Userconfig>
+		<File file-name="userconfig.xml" source-path="source" target-path="conf"/>
+	</Userconfig>
+	<Jobs>
+		<Job job-name="genera_pdf" process-name="process1">
+        </Job>
+		<Job job-name="genera_xsl" process-name="process2" transformation-name="transformation1">
+        </Job>
+		<Job job-name="genera_template" process-name="process3" template-name="template1">
+        </Job>
+	</Jobs>
+	<Fonts>
+		<Font font-name="arialuni">
+			<Font-triplet indd-name="Arial Unicode MS" indd-style="Regular" font-style="normal">
+				<Metrics-file file-name="arialuni.xml" target-path="fonts"/>
+				<File file-name="arialuni.ttf" target-path="fonts"/>
+			</Font-triplet>
+		</Font>
+		<!--  __________________________________________________________ -->
+		<!--                                           JCArial           -->
+		<!--  __________________________________________________________ -->
+		<Font font-name="Arial">
+			<Font-triplet indd-name="Arial" indd-style="Regular" font-style="normal">
+				<Metrics-file file-name="arial.xml" target-path="fonts"/>
+				<File file-name="arial.ttf" source-path="fonts" target-path="fonts"/>
+			</Font-triplet>
+			<Font-triplet indd-name="Arial" indd-style="Bold" font-style="bold">
+				<Metrics-file file-name="arialb.xml" target-path="fonts"/>
+				<File file-name="arialb.ttf" source-path="fonts" target-path="fonts"/>
+			</Font-triplet>
+			<Font-triplet indd-name="Arial" indd-style="Italic" font-style="italic">
+				<Metrics-file file-name="ariali.xml" target-path="fonts"/>
+				<File file-name="ariali.ttf" source-path="fonts" target-path="fonts"/>
+			</Font-triplet>
+			<Font-triplet indd-name="Arial" indd-style="Bold Italic" font-style="bolditalic">
+				<Metrics-file file-name="arialbi.xml" target-path="fonts"/>
+				<File file-name="arialbi.ttf" source-path="fonts" target-path="fonts"/>
+			</Font-triplet>
+		</Font>
+	</Fonts>
+	<Services>
+		<Service service-key="pdf-output" builder-class="de.irs.generator.services.fop.PdfServiceBuilder">
+			<Entries>
+				<Entry key="user-config" value="conf/userconfig.xml"/>
+			</Entries>
+		</Service>
+		<Service service-key="char-convert-service" builder-class="de.irs.generator.services.charConvertService.CharConvertServiceBuilder"/>
+	</Services>
+	<WorkFlow>
+		<Processes>
+			<Process name="GENERATE_GENERATOR_FO">
+				<StepLink step-key="GENERA_TO_FO"/>
+			</Process>
+		</Processes>
+		<Steps>
+			<Step step-key="GENERA_TO_FO" input-type="internal" output-type="internal" output-file-mask="%%job-id%%_layout.xml">
+				<Transformers>
+					<Transformer name="document" object-type="DOCUMENT" class="de.irs.generator.pdf.transformers.FoDocumentTransformer"/>
+				</Transformers>
+			</Step>
+		</Steps>
+	</WorkFlow>
+</Configuration>
